@@ -1,9 +1,33 @@
-
+<!DCOTYPE HTML>
 <html>
 <head>
-
+	<link rel="stylesheet" href="css/ol.css" type="text/css">
+	<link rel="stylesheet" href="css/common-setting.css" type="text/css">
+	<style>
+		#css_animation{
+			height:50px; 
+			width:50px;
+			border-radius: 25px; 
+			background: rgba(255, 0, 0, 0.9);
+			
+			transform: scale(0);
+			animation: myfirst 3s; 		
+			animation-iteration-count: infinite;
+		}
+	  
+		@keyframes myfirst{
+			to{
+				transform: scale(2);
+				background: rgba(0, 0, 0, 0);
+			}
+		}
+	</style>
 </head>
 <body>
-
+	<div id="css_animation"></div>
+	<div id="map"></div>
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/ol.js"></script>
+<script type="text/javascript" src="point-animation-overlay.js"></script>
 </body>
 </html>
