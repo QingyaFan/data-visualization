@@ -1,0 +1,16 @@
+/**
+ * Description: OL3-实例样式文件
+ * Author: qingyafan@163.com
+ * Date: 2016-6-1
+ */
+html,body{
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    width: 100%;
+}
+
+#map{
+    height: 100%;
+    width: 100%;
+}
