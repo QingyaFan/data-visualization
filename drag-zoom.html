@@ -26,6 +26,10 @@
         border-radius: 5px;
         background-color: rgb(255, 255, 255);
       }
+      .ol-dragzoom {
+        border: 3px dashed rgb(255, 0, 0);
+        border-radius: 3px;
+      }
     </style>
   </head>
   <body>
@@ -37,7 +41,7 @@
 
     <script src="https://openlayers.org/en/v4.0.1/build/ol.js" charset="utf-8"></script>
     <script type="text/javascript">
-      var dragboxActive = false;
+      var dragzoomActive = false;
 
       var map = new ol.Map({
         target: "map",
@@ -53,24 +57,22 @@
       });
 
       // 初始化一个拉框控件
-      var dragBox = new ol.interaction.DragBox({});
-      map.addInteraction(dragBox);
-      dragBox.on('boxend', function() {
-        var extent = this.getGeometry().getExtent();
-        map.getView().fit(extent);
-        console.log(extent);
+      var dragZoom = new ol.interaction.DragZoom({
+        condition: ol.events.condition.always,
+        // out: true, // 此处为设置拉框完成时放大还是缩小
       });
-      dragBox.setActive(false);
+      map.addInteraction(dragZoom);
+      dragZoom.setActive(false);
 
       // 绑定放大缩小按钮事件
       document.querySelector("#zoom_in").addEventListener('click', function() {
-        if (dragboxActive) {
-          dragBox.setActive(false);
-          dragboxActive = false;
+        if (dragzoomActive) {
+          dragZoom.setActive(false);
+          dragzoomActive = false;
           document.querySelector("#map").style.cursor = "default";
         } else {
-          dragBox.setActive(true);
-          dragboxActive = true;
+          dragZoom.setActive(true);
+          dragzoomActive = true;
           document.querySelector("#map").style.cursor = "crosshair";
         }
       }, false);
