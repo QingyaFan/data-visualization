@@ -5,12 +5,11 @@
     <title></title>
     <link rel="stylesheet" href="{{ asset('/css/main.css') }}">
     <link rel="stylesheet" href="{{ asset('/css/ol.css') }}">
-    <script src="{{ asset('/scripts/jquery.js') }}" charset="utf-8"></script>
-    <script src="{{ asset('/scripts/ol-debug.js') }}" charset="utf-8"></script>
   </head>
   <body>
     <div id="map" class="map fullsize"></div>
 
+    <script src="https://openlayers.org/en/v4.0.1/build/ol.js" charset="utf-8"></script>
     <script type="text/javascript">
       var map = new ol.Map({
         target: 'map',

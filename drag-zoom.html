@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>拉框放大与缩小</title>
+    <link rel="stylesheet" href="https://openlayers.org/en/v4.0.1/css/ol.css">
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style media="screen">
+      html, body, div.map {
+        width: 100%;
+        height: 100%;
+        padding: 0;
+        margin: 0;
+      }
+      .x-zoom-icons {
+        position: absolute;
+        left: 0.5em;
+        top: 5em;
+        z-index: 999;
+      }
+      .x-zoom-icons span{
+        display: block;
+        padding: 7px;
+        cursor: pointer;
+        border: 1.5px solid rgba(255, 255, 255, 0.5);
+        border-radius: 5px;
+        background-color: rgb(255, 255, 255);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map" class="map">
+      <div class="x-zoom-icons">
+        <span id="zoom_in" class="glyphicon glyphicon-zoom-in"></span>
+      </div>
+    </div>
+
+    <script src="https://openlayers.org/en/v4.0.1/build/ol.js" charset="utf-8"></script>
+    <script type="text/javascript">
+      var dragboxActive = false;
+
+      var map = new ol.Map({
+        target: "map",
+        layers: [
+          new ol.layer.Tile({
+            source: new ol.source.OSM()
+          })
+        ],
+        view: new ol.View({
+          center: ol.proj.transform([108, 39], 'EPSG:4326', 'EPSG:3857'),
+          zoom: 11
+        })
+      });
+
+      // 初始化一个拉框控件
+      var dragBox = new ol.interaction.DragBox({});
+      map.addInteraction(dragBox);
+      dragBox.on('boxend', function() {
+        var extent = this.getGeometry().getExtent();
+        map.getView().fit(extent);
+        console.log(extent);
+      });
+      dragBox.setActive(false);
+
+      // 绑定放大缩小按钮事件
+      document.querySelector("#zoom_in").addEventListener('click', function() {
+        if (dragboxActive) {
+          dragBox.setActive(false);
+          dragboxActive = false;
+          document.querySelector("#map").style.cursor = "default";
+        } else {
+          dragBox.setActive(true);
+          dragboxActive = true;
+          document.querySelector("#map").style.cursor = "crosshair";
+        }
+      }, false);
+
+    </script>
+  </body>
+</html>

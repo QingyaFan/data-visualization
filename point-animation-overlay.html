@@ -1,72 +1,72 @@
-<!DCOTYPE HTML>
+<!DOCTYPE html>
 <html>
-<head>
-	<link rel="stylesheet" href="css/ol.css" type="text/css">
-	<link rel="stylesheet" href="css/main.css" type="text/css">
-	<style>
-		#css_animation{
-			height:50px; 
-			width:50px;
-			border-radius: 25px; 
-			background: rgba(255, 0, 0, 0.9);
-			
-			transform: scale(0);
-			animation: myfirst 3s; 		
-			animation-iteration-count: infinite;
-		}
-	  
-		@keyframes myfirst{
-			to{
-				transform: scale(2);
-				background: rgba(0, 0, 0, 0);
+	<head>
+		<link rel="stylesheet" href="https://openlayers.org/en/v4.0.1/css/ol.css" type="text/css">
+		<link rel="stylesheet" href="css/main.css" type="text/css">
+		<style>
+			#css_animation{
+				height:50px;
+				width:50px;
+				border-radius: 25px;
+				background: rgba(255, 0, 0, 0.9);
+
+				transform: scale(0);
+				animation: myfirst 3s;
+				animation-iteration-count: infinite;
 			}
-		}
-	</style>
-</head>
-<body>
-	<div id="css_animation"></div>
-	<div id="map"></div>
-<script type="text/javascript" src="scripts/libs/jquery.js"></script>
-<script type="text/javascript" src="scripts/libs/ol.js"></script>
-<script type="text/javascript">
-	var tian_di_tu_road_layer = new ol.layer.Tile({
-		title: "天地图路网",
-		source: new ol.source.XYZ({
-			url: "http://t4.tianditu.com/DataServer?T=vec_w&x={x}&y={y}&l={z}"
-		})
-	});
 
-	var tian_di_tu_annotation = new ol.layer.Tile({
-		title: "天地图文字标注",
-		source: new ol.source.XYZ({
-			url: 'http://t3.tianditu.com/DataServer?T=cva_w&x={x}&y={y}&l={z}'
-		})
-	});
+			@keyframes myfirst{
+				to{
+					transform: scale(2);
+					background: rgba(0, 0, 0, 0);
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<div id="css_animation"></div>
+		<div id="map"></div>
+	<script type="text/javascript" src="scripts/libs/jquery.js"></script>
+	<script type="text/javascript" src="scripts/libs/ol.js"></script>
+	<script type="text/javascript">
+		var tian_di_tu_road_layer = new ol.layer.Tile({
+			title: "天地图路网",
+			source: new ol.source.XYZ({
+				url: "http://t4.tianditu.com/DataServer?T=vec_w&x={x}&y={y}&l={z}"
+			})
+		});
 
-	var map = new ol.Map({
-		target: 'map',
-		layers: [
-			tian_di_tu_road_layer,
-			tian_di_tu_annotation
-		],
-		controls: ol.control.defaults({}).extend([
-			new ol.control.MousePosition({})
-		]),
-		view: new ol.View({
-			center:  [11468382.41282299,3502038.887913635],
-			zoom: 11
-		})
-	});
+		var tian_di_tu_annotation = new ol.layer.Tile({
+			title: "天地图文字标注",
+			source: new ol.source.XYZ({
+				url: 'http://t3.tianditu.com/DataServer?T=cva_w&x={x}&y={y}&l={z}'
+			})
+		});
+
+		var map = new ol.Map({
+			target: 'map',
+			layers: [
+				tian_di_tu_road_layer,
+				tian_di_tu_annotation
+			],
+			controls: ol.control.defaults({}).extend([
+				new ol.control.MousePosition({})
+			]),
+			view: new ol.View({
+				center:  [11468382.41282299,3502038.887913635],
+				zoom: 11
+			})
+		});
 
 
-	var point_div = document.getElementById("css_animation");
-	var point_overlay = new ol.Overlay({
-		element: point_div,
-		positioning: 'bottom-left',
-		stopEvent: false
-	});
-	map.addOverlay(point_overlay);
-	point_overlay.setPosition([11468382.41282299,3502038.887913635]);
-</script>
-</body>
+		var point_div = document.getElementById("css_animation");
+		var point_overlay = new ol.Overlay({
+			element: point_div,
+			positioning: 'bottom-left',
+			stopEvent: false
+		});
+		map.addOverlay(point_overlay);
+		point_overlay.setPosition([11468382.41282299,3502038.887913635]);
+	</script>
+	</body>
 </html>
