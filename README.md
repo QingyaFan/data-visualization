@@ -8,4 +8,5 @@
 - layer-switcher.html，图层切换控件；
 - ol3-graticule.html，实现覆盖地图之上的格网图层；
 - point-animation-overlay.html，动态点效果；
-- contextmenu.html，地图鼠标右键菜单功能。
+- contextmenu.html，地图鼠标右键菜单功能；
+- vector.html，要素高亮，点击地图弹出信息框。
