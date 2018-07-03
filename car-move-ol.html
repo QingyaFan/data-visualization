@@ -5,17 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>车辆运动</title>
-    <link rel="stylesheet" href="./css/ol.css" type="text/css">
-    <link rel="stylesheet" href="./css/common.css" type="text/css">
+    <link rel="stylesheet" href="./css/common.css">
+    <link rel="stylesheet" href="./css/ol.css">
+    <style>
+    .tool-wrapper {
+        position: absolute;
+        right: 20px;
+        bottom: 50px;
+        z-index: 9;
+        background-color: white;
+        padding: 8px 12px;
+    }
+    </style>
     <script src="./js/ol.js"></script>
 </head>
 <body>
-    <div id="map" class="map"></div>
-    <label for="speed">
-        speed:&nbsp;
-        <input id="speed" type="range" min="10" max="999" step="10" value="60">
-    </label>
-    <button id="start-animation">Start Animation</button>
+    <div id="map" class="map">
+        <div class="tool-wrapper">
+            <label for="speed">
+                speed:&nbsp;
+                <input id="speed" type="range" min="10" max="999" step="10" value="60">
+            </label>
+            <button id="start-animation">Start Animation</button>
+        </div>
+    </div>
 
     <script>
     var polyline = [
