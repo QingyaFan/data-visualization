@@ -42,7 +42,7 @@ const style = new ol.style.Style({
 const vectorLayer = new ol.layer.Vector({ //初始化矢量图层  
     source: new ol.source.Vector({
         format: new ol.format.GeoJSON(),
-        url: `data/geojson/countries.geojson`,
+        url: `./data/geojson/countries.geojson`,
     }),
     style: function (feature, resolution) {
         style.getText().setText(resolution < 5000 ? feature.get('name') : '');  //当放大到1:5000分辨率时，显示国家名字  
