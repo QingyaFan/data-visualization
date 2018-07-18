@@ -9,28 +9,48 @@
     <style>
     .index-wrapper {
         position: absolute;
-        width: 600px;
-        height: 400px;
+        width: 240px;
+        height: 210px;
         margin: auto;
         left: 0;
         top: 0;
         right: 0;
         bottom: 0;
         text-align: center;
+        z-index: 9;
     }
     </style>
+    <script src="./js/ol.js"></script>
 </head>
 <body>
-    <div class="index-wrapper">
-        <div><a href="./point-animation-overlay.html">绘制&测量距离和面积</a></div>
-        <div><a href="./drag-zoom.html">拉框缩放</a></div>
-        <div><a href="./contextmenu.html">地图右键菜单</a></div>
-        <div><a href="./car-move-ol.html">车辆沿轨迹移动</a></div>
-        <div><a href="./layer-switcher.html">图层切换</a></div>
-        <div><a href="./ol3-graticule.html">经纬网格</a></div>
-        <div><a href="./point-animation-overlay.html">点要素动画</a></div>
-        <div><a href="./vector.html">矢量图层</a></div>
-        <div><a href="./vectortiles.html">矢量切片</a></div>
+    <div id="map">
+        <div class="index-wrapper">
+            <div><a href="./measure-distance-area.html">绘制&测量距离和面积</a></div>
+            <div><a href="./drag-zoom.html">拉框缩放</a></div>
+            <div><a href="./contextmenu.html">地图右键菜单</a></div>
+            <div><a href="./car-move-ol.html">车辆沿轨迹移动</a></div>
+            <div><a href="./layer-switcher.html">图层切换</a></div>
+            <div><a href="./ol3-graticule.html">经纬网格</a></div>
+            <div><a href="./point-animation-overlay.html">点要素动画</a></div>
+            <div><a href="./vector.html">矢量图层</a></div>
+            <div><a href="./vectortiles.html">矢量切片</a></div>
+        </div>
     </div>
+    <script>
+        const map = new ol.Map({
+            target: 'map',
+            layers: [
+                new ol.layer.Tile({
+                    source: new ol.source.TileImage({ 
+                        url: 'http://mt1.google.com/vt/lyrs=m@113&hl=en&&x={x}&y={y}&z={z}' 
+                    })
+                })
+            ],
+            view: new ol.View({
+                center: ol.proj.fromLonLat([-20, -14]),
+                zoom: 4
+            })
+        })
+    </script>
 </body>
 </html>
