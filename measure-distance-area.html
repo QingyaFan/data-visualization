@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>OL量测</title>
+    <link rel="stylesheet" href="./css/ol.css">
+    <link rel="stylesheet" href="./css/iconfont/iconfont.css">
+    <link rel="stylesheet" href="./css/main.css">
+    <script src="./js/ol.js"></script>
+</head>
+
+<body>
+    <div class="map-wrapper">
+        <div id="map">
+            <div class="tool-wrapper">
+                <i id="measureDistance" class="tool iconfont icon-juanchi"></i>
+                <i id="measureArea" class="tool iconfont icon-mianji"></i>
+            </div>
+        </div>
+    </div>
+    <script>
+        var helpTooltipElement
+        var featureType = 'LineString'
+        var measureTooltipElement
+        var measureTooltip
+        var draw, listener
+
+        // 绘制结果矢量图层
+        var source = new ol.source.Vector();
+        var vectorLayer = new ol.layer.Vector({
+            source: source,
+            // 矢量图层样式
+            style: new ol.style.Style({
+                fill: new ol.style.Fill({
+                    color: 'rgba(125, 125, 125, 0.2)'
+                }),
+                stroke: new ol.style.Stroke({
+                    color: '#ffcc33',
+                    width: 2
+                }),
+                image: new ol.style.Circle({
+                    radius: 7,
+                    fill: new ol.style.Fill({
+                        color: '#ffcc33'
+                    })
+                })
+            })
+        });
+
+        // 初始化地图
+        var map = new ol.Map({
+            target: 'map',
+            view: new ol.View({
+                center: ol.proj.fromLonLat([116, 38], 'EPSG:3857'),
+                zoom: 5
+            }),
+            layers: [
+                new ol.layer.Tile({
+                    source: new ol.source.OSM()
+                }),
+                vectorLayer
+            ]
+        })
+
+        // 添加鹰眼功能
+        var overview = new ol.control.OverviewMap({
+            collapsible: false
+        })
+        map.addControl(overview)
+
+        // 鼠标移动事件
+        var drawingFeature = null
+        var helpMsg = '点击继续绘制'
+        var lineHelpMsg = '点击继续绘制线'
+        var polygonHelpMsg = '点击继续绘制面'
+        var pointerMoveHandler = (evt) => {
+            if (evt.dragging) {
+                return
+            }
+            if (drawingFeature) {
+                var geom = drawingFeature.getGeometry()
+                if (geom instanceof ol.geom.Polygon) {
+                    helpMsg = polygonHelpMsg
+                    console.log('polygon')
+                } else if (geom instanceof ol.geom.LineString) {
+                    helpMsg = lineHelpMsg
+                    console.log('linestring')
+                }
+            }
+            helpTooltipElement.innerHTML = helpMsg
+            helpTooltip.setPosition(evt.coordinate)
+            helpTooltipElement.classList.remove('hidden');
+        }
+
+        map.on('pointermove', pointerMoveHandler)
+        map.getViewport().addEventListener('mouseout', () => {
+            helpTooltipElement.classList.add('hidden')
+        })
+
+        // 对绘制线或面按钮添加点击事件
+        document.getElementById('measureDistance').addEventListener('click', () => {
+            featureType = 'LineString'
+            map.removeInteraction(draw)
+            addInteraction()
+        })
+        document.getElementById('measureArea').addEventListener('click', () => {
+            featureType = 'Polygon'
+            map.removeInteraction(draw)
+            addInteraction()
+        })
+
+        // 格式化输出线的长度和多边形的面积
+        var formatLength = (line) => {
+            var length = ol.sphere.getLength(line)
+            var output
+            if (length > 100) {
+                output = (Math.round(length / 1000 * 100) / 100) + ' km'
+            } else {
+                output = (Math.round(length * 100) / 100) + ' m'
+            }
+            return output
+        }
+        var formatArea = (polygon) => {
+            var area = ol.sphere.getArea(polygon)
+            var output
+            if (area > 10000) {
+                output = (Math.round(area / 1000000 * 100) / 100) + ' km<sup>2</sup>'
+            } else {
+                output = (Math.round(area * 100) / 100) + ' m<sup>2</sup>'
+            }
+            return output
+        }
+
+        // 添加绘制控件
+        function addInteraction() {
+            var type = featureType
+            draw = new ol.interaction.Draw({
+                source: source,
+                type: type,
+                // 勾绘出要素的样式
+                style: new ol.style.Style({
+                    fill: new ol.style.Fill({
+                        color: 'rgba(125, 125, 125, 0.2)'
+                    }),
+                    stroke: new ol.style.Stroke({
+                        color: 'rgba(0, 0, 0, 0.5)',
+                        lineDash: [10, 10],
+                        width: 2
+                    }),
+                    image: new ol.style.Circle({
+                        radius: 5,
+                        stroke: new ol.style.Stroke({
+                            color: 'rgba(0, 0, 0, 0.7)'
+                        }),
+                        fill: new ol.style.Fill({
+                            color: 'rgba(255, 255, 255, 0.2)'
+                        })
+                    })
+                })
+            })
+            map.addInteraction(draw)
+
+            try {
+                createMeasureTooltip()
+                createHelpTooltip()
+            } catch (error) {
+                console.log('error', error)
+            }
+
+            draw.on('drawstart', (evt) => {
+                drawingFeature = evt.feature
+                var tooltipCoord = evt.coordinate
+                listener = drawingFeature.getGeometry().on('change', (evt) => {
+                    var geom = evt.target
+                    var output
+                    if (geom instanceof ol.geom.Polygon) {
+                        output = formatArea(geom)
+                        tooltipCoord = geom.getInteriorPoint().getCoordinates()
+                    } else if (geom instanceof ol.geom.LineString) {
+                        output = formatLength(geom)
+                        tooltipCoord = geom.getLastCoordinate()
+                    }
+                    measureTooltipElement.innerHTML = output
+                    measureTooltip.setPosition(tooltipCoord)
+                })
+            }, this)
+            draw.on('drawend', (evt) => {
+                measureTooltipElement.className = 'tooltip tooltip-static'
+                measureTooltip.setOffset([0, -7])
+                drawingFeature = null
+                measureTooltipElement = null
+                createMeasureTooltip()
+                ol.Observable.unByKey(listener)
+            }, this)
+        }
+
+        // 创建帮助信息标签
+        function createHelpTooltip() {
+            if (helpTooltipElement) {
+                helpTooltipElement.parentNode.removeChild(helpTooltipElement)
+            }
+            helpTooltipElement = document.createElement('div')
+            helpTooltipElement.className = 'tooltip hidden'
+            helpTooltip = new ol.Overlay({
+                element: helpTooltipElement,
+                offset: [15, 0],
+                positioning: 'center-left'
+            })
+            map.addOverlay(helpTooltip)
+        }
+
+        // 创建测量结果信息标签
+        function createMeasureTooltip() {
+            if (measureTooltipElement) {
+                measureTooltipElement.parentNode.removeChild(measureTooltipElement)
+            }
+            measureTooltipElement = document.createElement('div')
+            measureTooltipElement.className = 'tooltip tooltip-measure'
+            measureTooltip = new ol.Overlay({
+                element: measureTooltipElement,
+                offset: [0, -15],
+                positioning: 'bottom-center'
+            })
+            map.addOverlay(measureTooltip)
+        }
+
+        // 默认开启线绘制功能
+        try {
+            addInteraction()
+        } catch (error) {
+            console.log(error)
+        }
+
+    </script>
+</body>
+
+</html>
