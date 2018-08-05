@@ -24,41 +24,13 @@
         })
       });
 
-      // 行政区划图层
-      var vectortileAdminLayer = new ol.layer.VectorTile({
-        source: new ol.source.VectorTile({
-          format: new ol.format.MVT(),
-          tileGrid: ol.tilegrid.createXYZ({maxZoom: 22}),
-          tilePixelRatio: 1,
-          url: 'http://127.0.0.1:8080/geoserver/gwc/service/tms/1.0.0/' +
-          'china:beijing_china_osm_admin_3857@EPSG%3A900913@pbf/{z}/{x}/{-y}.pbf'
-        }),
-        style: new ol.style.Style({
-          fill: new ol.style.Fill({
-            color: 'rgb(140,137,129)'
-          }),
-          stroke: new ol.style.Stroke({
-            color: 'rgb(220, 220, 220)',
-            width: 1
-          })
-        })
-      });
-      map.addLayer(vectortileAdminLayer);
-
-      // 河流图层
+      // 全国道路图层
       var vectortileLayer = new ol.layer.VectorTile({
         source: new ol.source.VectorTile({
           format: new ol.format.MVT(),
           tileGrid: ol.tilegrid.createXYZ({maxZoom: 22}),
           tilePixelRatio: 1,
-          url: 'http://127.0.0.1:8080/geoserver/gwc/service/tms/1.0.0/' +
-            'china:beijing_china_osm_waterways_3857@EPSG%3A900913@pbf/{z}/{x}/{-y}.pbf'
-        }),
-        style: new ol.style.Style({
-          stroke: new ol.style.Stroke({
-            color: 'rgb(163,204,25)',
-            width: 5
-          })
+          url: 'http://cheerfun.xyz:8000/vt/tile/{z}/{x}/{y}?sql=select the_geom_webmercator as geom from data.roads'
         })
       });
       map.addLayer(vectortileLayer);
