@@ -10,4 +10,5 @@
 - ol3-graticule.html，[地图格网图层](http://cheerfun.xyz:8000/ol3-graticule.html)；
 - point-animation-overlay.html，[动态点效果](http://cheerfun.xyz:8000/point-animation-overlay.html)；
 - contextmenu.html，[地图右键菜单](http://cheerfun.xyz:8000/contextmenu.html)；
-- vector.html，[要素高亮，点击地图弹出信息框](http://cheerfun.xyz:8000/vector.html)。
+- vector.html，[要素高亮，点击地图弹出信息框](http://cheerfun.xyz:8000/vector.html)；
+- vectortiles.html，[ol使用矢量切片](http://cheerfun.xyz:8000/vectortiles.html)。
