@@ -4,6 +4,7 @@
 
 在 openlayers 官方网站 -- http://openlayers.org/en/latest/examples， 有很多很有用的例子，这里不再重复，本项目主要是一些官方没有，但是经常在博客中提问到的问题。
 
+- point-cluster.html，[点聚类](http://cheerfun.xyz:8000/point-cluster.html)；
 - measure-distance-area.html，[绘制&测量距离和面积](http://cheerfun.xyz:8000/measure-distance-area.html)；
 - drag-zoom.html，[拉框缩放功能](http://cheerfun.xyz:8000/drag-zoom.html)；
 - layer-switcher.html，[图层切换](http://cheerfun.xyz:8000/layer-switcher.html)；

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>点聚类</title>
+    <link rel="stylesheet" href="./css/ol.css">
+    <script src="./js/ol.js"></script>
+</head>
+<body>
+    <div id="map"></div>
+    <script>
+        let map = new ol.Map({
+            target: 'map',
+            layers: [
+                new ol.layer.Tile({
+                    source: new ol.source.OSM()
+                })
+            ],
+            view: new ol.View({
+                center: ol.proj.fromLonLat([118, 36]),
+                zoom: 2
+            })
+        });
+
+        var styleCache = {};
+        const earthquakeCluster = new ol.layer.Vector({
+            source: new ol.source.Cluster({
+                distance: 20,
+                source: new ol.source.Vector({
+                    format: new ol.format.GeoJSON(),
+                    url: 'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geojson'
+                })
+            }),
+            style: function (feature) {
+                var size = feature.get('features').length;
+                var style = styleCache[size];
+                if (!style) {
+                    style = new ol.style.Style({
+                        image: new ol.style.Circle({
+                            radius: 10,
+                            stroke: new ol.style.Stroke({
+                                color: '#fff'
+                            }),
+                            fill: new ol.style.Fill({
+                                color: '#3399CC'
+                            })
+                        }),
+                        text: new ol.style.Text({
+                            text: size.toString(),
+                            fill: new ol.style.Fill({
+                                color: '#fff'
+                            })
+                        })
+                    });
+                    styleCache[size] = style;
+                }
+                return style;
+            }
+        });
+        map.addLayer(earthquakeCluster)
+    </script>
+</body>
+</html>
