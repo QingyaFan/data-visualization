@@ -25,12 +25,29 @@
       });
 
       // 全国道路图层
+      var resolutions = [];
+      for (var i = 0; i <= 8; ++i) {
+        resolutions.push(156543.03392804097 / Math.pow(2, i * 2));
+      }
       var vectortileLayer = new ol.layer.VectorTile({
         source: new ol.source.VectorTile({
           format: new ol.format.MVT(),
-          tileGrid: ol.tilegrid.createXYZ({maxZoom: 22}),
+          // tileGrid: ol.tilegrid.createXYZ({maxZoom: 22}),
+          tileGrid: new ol.tilegrid.TileGrid({
+            extent: ol.proj.get('EPSG:3857').getExtent(),
+            resolutions: resolutions,
+            tileSize: 512
+          }),
           tilePixelRatio: 1,
-          url: 'http://cheerfun.xyz:8000/vt/tile/{z}/{x}/{y}?sql=select the_geom_webmercator as geom from data.roads'
+          // url: 'http://cheerfun.xyz:8000/vt/tile/{z}/{x}/{y}?sql=select way from planet_osm_line',
+          tileUrlFunction: (tileCoord) => {
+            return ('http://cheerfun.xyz:8000/vt/tile/{z}/{x}/{y}?sql=select way from planet_osm_line')
+              .replace('{z}', String(tileCoord[0] * 2 - 1))
+              .replace('{x}', String(tileCoord[1]))
+              .replace('{y}', String(-tileCoord[2] - 1))
+              .replace('{a-d}', 'abcd'.substr(
+                ((tileCoord[1] << tileCoord[0]) + tileCoord[2]) % 4, 1));
+          }
         })
       });
       map.addLayer(vectortileLayer);

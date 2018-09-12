@@ -24,40 +24,85 @@
             })
         });
 
+        // 每个地震点的默认样式
+        let createEarthquakeStyle = (feature) => {
+            return new ol.style.Style({
+                image: new ol.style.Circle({
+                    radius: 3,
+                    fill: new ol.style.Fill({
+                        color: 'rgb(255, 0, 0)'
+                    })
+                })
+            })
+        }
+
+        // 计算每个要素的半径
+        let maxFeatureCount;
+        let earthquakeCluster = null;
+        let calculateClusterInfo = (resolution) => {
+            maxFeatureCount = 0;
+            let features = earthquakeCluster.getSource().getFeatures();
+            let feature, radius;
+            for (let i = features.length - 1; i >= 0; i--) {
+                feature = features[i];
+                let originalFeatures = feature.get('features');
+                let extent = ol.extent.createEmpty();
+                let j = (void 0), jj = (void 0);
+                for (let j = 0, jj = originalFeatures.length; j<jj; ++j) {
+                    ol.extent.extend(extent, originalFeatures[j].getGeometry().getExtent());
+                }
+                maxFeatureCount = Math.max(maxFeatureCount, jj);
+                radius = 0.25 * (ol.extent.getWidth(extent) + ol.extent.getHeight(extent)) / resolution;
+                feature.set('radius', radius);
+            }
+        }
+
+        // 样式函数，对每个feature返回一个样式
+        let currentResolution;
+        let styleFunction = (feature, resolution) => {
+            if (resolution != currentResolution) {
+                calculateClusterInfo(resolution);
+                currentResolution = resolution;
+            }
+            let style;
+            let size = feature.get('features').length;
+            if (size > 1) {
+                style = new ol.style.Style({
+                    image: new ol.style.Circle({
+                        radius: feature.get('radius'),
+                        fill: new ol.style.Fill({
+                            color: [255, 153, 0]
+                        })
+                    }),
+                    text: new ol.style.Text({
+                        text: size.toString(),
+                        fill: new ol.style.Fill({
+                            color: '#fff'
+                        }),
+                        stroke: new ol.style.Stroke({
+                            color: 'rgba(0, 0, 0, 0.6)',
+                            width: 3
+                        })
+                    })
+                })
+            } else {
+                let originalFeature = feature.get('features')[0];
+                style = createEarthquakeStyle(originalFeature);
+            }
+            return style;
+        }
+
+        // 聚类图层
         var styleCache = {};
-        const earthquakeCluster = new ol.layer.Vector({
+        earthquakeCluster = new ol.layer.Vector({
             source: new ol.source.Cluster({
-                distance: 20,
+                distance: 20,   // 聚类阈值，当两点间距离小于20，便聚类为一个点
                 source: new ol.source.Vector({
                     format: new ol.format.GeoJSON(),
                     url: 'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geojson'
                 })
             }),
-            style: function (feature) {
-                var size = feature.get('features').length;
-                var style = styleCache[size];
-                if (!style) {
-                    style = new ol.style.Style({
-                        image: new ol.style.Circle({
-                            radius: 10,
-                            stroke: new ol.style.Stroke({
-                                color: '#fff'
-                            }),
-                            fill: new ol.style.Fill({
-                                color: '#3399CC'
-                            })
-                        }),
-                        text: new ol.style.Text({
-                            text: size.toString(),
-                            fill: new ol.style.Fill({
-                                color: '#fff'
-                            })
-                        })
-                    });
-                    styleCache[size] = style;
-                }
-                return style;
-            }
+            style: styleFunction
         });
         map.addLayer(earthquakeCluster)
     </script>
