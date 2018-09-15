@@ -77,7 +77,6 @@
         }
 
         // 聚类图层
-        var styleCache = {};
         earthquakeCluster = new ol.layer.Vector({
             source: new ol.source.Cluster({
                 distance: 80,   // 聚类阈值，当两点间距离小于20，便聚类为一个点
@@ -86,7 +85,7 @@
                     url: 'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_month.geojson'
                 })
             }),
-            style: styleFunction
+            // style: styleFunction
         });
 
         let map = new ol.Map({
