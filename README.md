@@ -4,12 +4,13 @@
 
 在 openlayers 官方网站 -- http://openlayers.org/en/latest/examples， 有很多很有用的例子，这里不再重复，本项目主要是一些官方没有，但是经常在博客中提问到的问题。
 
-- point-cluster.html，[全球地震点聚集](http://cheerfun.xyz:8000/point-cluster.html)；
-- measure-distance-area.html，[绘制&测量距离和面积](http://cheerfun.xyz:8000/measure-distance-area.html)；
-- drag-zoom.html，[拉框缩放功能](http://cheerfun.xyz:8000/drag-zoom.html)；
-- layer-switcher.html，[图层切换](http://cheerfun.xyz:8000/layer-switcher.html)；
-- ol3-graticule.html，[地图格网图层](http://cheerfun.xyz:8000/ol3-graticule.html)；
-- point-animation-overlay.html，[动态点效果](http://cheerfun.xyz:8000/point-animation-overlay.html)；
-- contextmenu.html，[地图右键菜单](http://cheerfun.xyz:8000/contextmenu.html)；
-- vector.html，[要素高亮，点击地图弹出信息框](http://cheerfun.xyz:8000/vector.html)；
-- vectortiles.html，[ol使用矢量切片](http://cheerfun.xyz:8000/vectortiles.html)。
+- tianditu.html，[加载天地图图层](http://cheerfun.xyz/openlayers/tianditu.html)；
+- point-cluster.html，[全球地震点聚集](http://cheerfun.xyz/openlayers/point-cluster.html)；
+- measure-distance-area.html，[绘制&测量距离和面积](http://cheerfun.xyz/openlayers/measure-distance-area.html)；
+- drag-zoom.html，[拉框缩放功能](http://cheerfun.xyz/openlayers/drag-zoom.html)；
+- layer-switcher.html，[图层切换](http://cheerfun.xyz/openlayers/layer-switcher.html)；
+- ol3-graticule.html，[地图格网图层](http://cheerfun.xyz/openlayers/ol3-graticule.html)；
+- point-animation-overlay.html，[动态点效果](http://cheerfun.xyz/openlayers/point-animation-overlay.html)；
+- contextmenu.html，[地图右键菜单](http://cheerfun.xyz/openlayers/contextmenu.html)；
+- vector.html，[要素高亮，点击地图弹出信息框](http://cheerfun.xyz/openlayers/vector.html)；
+- vectortiles.html，[ol使用矢量切片](http://cheerfun.xyz/openlayers/vectortiles.html)。

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>openlayers加载天地图</title>
+    <link rel="stylesheet" href="./css/common.css">
+    <link rel="stylesheet" href="./css/ol.css">
+    <script src="./js/ol.js"></script>
+</head>
+<body>
+    <div class="map" id="map"></div>
+    <script>
+        // 注记图层
+        let tiandituAnnotationLayer = new ol.layer.Tile({
+            source: new ol.source.XYZ({
+                url: 'http://t3.tianditu.com/DataServer?T=cva_w&x={x}&y={y}&l={z}'
+            })
+        });
+        // 卫星影像图层
+        let tiandituSatelliteLayer = new ol.layer.Tile({
+            source: new ol.source.XYZ({
+                url: 'http://t3.tianditu.com/DataServer?T=img_w&x={x}&y={y}&l={z}'
+            })
+        });
+        let map = new ol.Map({
+            target: 'map',
+            layers: [
+                tiandituSatelliteLayer,
+                tiandituAnnotationLayer,
+            ],
+            view: new ol.View({
+                center: [0, 0],
+                zoom: 4
+            })
+        })
+    </script>
+</body>
+</html>
