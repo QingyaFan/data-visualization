@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/common.css">
+    <link rel="stylesheet" href="./css/ol.css">
+    <script src="./js/ol.js"></script>
+    <style>
+        .swipe {
+            position: absolute;
+            z-index: 9;
+            left: 50%;
+            height: 100%;
+            width: 2px;
+            background-color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div id="map" class="map">
+        <input id="swipe" type="range" style="width: 100%">
+        <div class="swipe"></div>
+    </div>
+    <script>
+        let osm = new ol.layer.Tile({
+            source: new ol.source.OSM()
+        });
+        let tiandituAnnotation = new ol.layer.Tile({
+            source: new ol.source.XYZ({
+                url: 'http://t3.tianditu.com/DataServer?T=cva_w&x={x}&y={y}&l={z}'
+            })
+        });
+        let map = new ol.Map({
+            layers: [osm, tiandituAnnotation],
+            target: 'map',
+            view: new ol.View({
+                center: [0, 0],
+                zoom: 2
+            })
+        });
+
+        let swipe = document.getElementById('swipe');
+        tiandituAnnotation.on('precompose', (evt) => {
+            let ctx = evt.context;
+            let width = ctx.canvas.width * (swipe.value / 100);
+            ctx.save();
+            ctx.beginPath();
+            ctx.rect(width, 0, ctx.canvas.width - width, ctx.canvas.height);
+            ctx.clip();
+        });
+        tiandituAnnotation.on('postcompose', (evt) => {
+            let ctx = evt.context;
+            ctx.restore();
+        });
+        swipe.addEventListener('input', () => {
+            map.render();
+        }, false);
+
+    </script>
+</body>
+</html>

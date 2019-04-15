@@ -41,7 +41,7 @@
           tilePixelRatio: 1,
           // url: 'http://cheerfun.xyz:8000/vt/tile/{z}/{x}/{y}?sql=select way from planet_osm_line',
           tileUrlFunction: (tileCoord) => {
-            return ('http://cheerfun.xyz:8000/vt/tile/{z}/{x}/{y}?sql=select way from planet_osm_line')
+            return ('http://cheerfun.xyz/vt/tile/{z}/{x}/{y}?table=cn_pg&geometry_field=way')
               .replace('{z}', String(tileCoord[0] * 2 - 1))
               .replace('{x}', String(tileCoord[1]))
               .replace('{y}', String(-tileCoord[2] - 1))
