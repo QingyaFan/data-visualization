@@ -1,56 +1,60 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title></title>
-    <link rel="stylesheet" href="./css/common.css">
-    <link rel="stylesheet" href="./css/ol.css">
-  </head>
-  <body>
-    <div id="map" class="map fullsize"></div>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+        <link rel="stylesheet" href="./css/common.css">
+        <link rel="stylesheet" href="./css/ol.css">
+    </head>
+    <body>
+        <div id="map" class="map fullsize"></div>
 
-    <script src="./js/ol.js" charset="utf-8"></script>
-    <script type="text/javascript">
-      var map = new ol.Map({
-        target: 'map',
-        layers: [
-          new ol.layer.Tile ({
-            source: new ol.source.OSM()
-          })
-        ],
-        view: new ol.View({
-          center: ol.proj.transform([116.5, 39.9], 'EPSG:4326', 'EPSG:3857'),
-          zoom: 9
-        })
-      });
+        <script src="./js/ol.js" charset="utf-8"></script>
+        <script type="text/javascript">
+        var map = new ol.Map({
+            target: 'map',
+            layers: [
+                new ol.layer.Tile ({
+                    source: new ol.source.OSM()
+                })
+            ],
+            view: new ol.View({
+                center: ol.proj.transform([116.5, 39.9], 'EPSG:4326', 'EPSG:3857'),
+                zoom: 12
+            })
+        });
 
-      // 全国道路图层
-      var resolutions = [];
-      for (var i = 0; i <= 8; ++i) {
-        resolutions.push(156543.03392804097 / Math.pow(2, i * 2));
-      }
-      var vectortileLayer = new ol.layer.VectorTile({
-        source: new ol.source.VectorTile({
-          format: new ol.format.MVT(),
-          // tileGrid: ol.tilegrid.createXYZ({maxZoom: 22}),
-          tileGrid: new ol.tilegrid.TileGrid({
-            extent: ol.proj.get('EPSG:3857').getExtent(),
-            resolutions: resolutions,
-            tileSize: 512
-          }),
-          tilePixelRatio: 1,
-          // url: 'http://cheerfun.xyz:8000/vt/tile/{z}/{x}/{y}?sql=select way from planet_osm_line',
-          tileUrlFunction: (tileCoord) => {
-            return ('http://cheerfun.xyz/vt/tile/{z}/{x}/{y}?table=cn_pg&geometry_field=way')
-              .replace('{z}', String(tileCoord[0] * 2 - 1))
-              .replace('{x}', String(tileCoord[1]))
-              .replace('{y}', String(-tileCoord[2] - 1))
-              .replace('{a-d}', 'abcd'.substr(
-                ((tileCoord[1] << tileCoord[0]) + tileCoord[2]) % 4, 1));
-          }
-        })
-      });
-      map.addLayer(vectortileLayer);
-    </script>
-  </body>
+        // 全国道路图层
+        var resolutions = [];
+        for (var i = 0; i <= 8; ++i) {
+            resolutions.push(156543.03392804097 / Math.pow(2, i * 2));
+        }
+
+        let url = `http://cheerfun.xyz/vt/tile/{z}/{x}/{y}?`;
+        url += `table=(select * from cn_pg where admin_level = '4') as subquery`;
+        url += `&`;
+        url += `geometry_field=way`;
+
+        var vectortileLayer = new ol.layer.VectorTile({
+            source: new ol.source.VectorTile({
+            format: new ol.format.MVT(),
+            tileGrid: new ol.tilegrid.TileGrid({
+                extent: ol.proj.get('EPSG:3857').getExtent(),
+                resolutions: resolutions,
+                tileSize: 512
+            }),
+            tilePixelRatio: 1,
+            tileUrlFunction: (tileCoord) => {
+                return (url)
+                .replace('{z}', String(tileCoord[0] * 2 - 1))
+                .replace('{x}', String(tileCoord[1]))
+                .replace('{y}', String(-tileCoord[2] - 1))
+                .replace('{a-d}', 'abcd'.substr(
+                    ((tileCoord[1] << tileCoord[0]) + tileCoord[2]) % 4, 1));
+            }
+            })
+        });
+        map.addLayer(vectortileLayer);
+        </script>
+    </body>
 </html>
