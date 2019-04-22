@@ -4,6 +4,7 @@
 
 在 openlayers 官方网站 -- http://openlayers.org/en/latest/examples， 有很多很有用的例子，这里不再重复，本项目主要是一些官方没有，但是经常在博客中提问到的问题。
 
+- got-map.html，[权利的游戏-静态图片地图](http://cheerfun.xyz/openlayers-examples/got-map.html)；
 - tianditu.html，[加载天地图图层](http://cheerfun.xyz/openlayers-examples/tianditu.html)；
 - point-cluster.html，[全球地震点聚集](http://cheerfun.xyz/openlayers-examples/point-cluster.html)；
 - measure-distance-area.html，[绘制&测量距离和面积](http://cheerfun.xyz/openlayers-examples/measure-distance-area.html)；

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>权力的游戏大陆版图</title>
+    <link rel="stylesheet" href="./css/common.css">
+    <link rel="stylesheet" href="./css/ol.css">
+</head>
+<body>
+    <div id="map" class="map fullsize"></div>
+    
+    <script src="./js/ol.js" charset="utf-8"></script>
+    <script type="text/javascript">
+        var extent = [0, 0, 690, 1568];
+        var projection = new ol.proj.Projection({
+            code: 'got-proj',
+            units: 'pixels',
+            extent: extent
+        });
+        var map = new ol.Map({
+            target: 'map',
+            layers: [
+                new ol.layer.Image({
+                    source: new ol.source.ImageStatic({
+                        url: './image/got.jpg',
+                        projection: projection,
+                        imageExtent: extent
+                    })
+                })
+            ],
+            view: new ol.View({
+                projection: projection,
+                center: [345, 784],
+                zoom: 3
+            })
+        });
+    </script>
+</body>
+</html>
