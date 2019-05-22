@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Mapserver WMS</title>
+    <link rel="stylesheet" href="./css/common.css">
+    <link rel="stylesheet" href="./css/ol.css">
+</head>
+
+<body>
+    <div id="map" class="map"></div>
+
+    <script src="./js/ol.js"></script>
+    <script>
+        let map = new ol.Map({
+            target: 'map',
+            layers: [
+                // new ol.layer.Tile({
+                //     source: new ol.source.OSM()
+                // })
+            ],
+            view: new ol.View({
+                projection: "EPSG:4326",
+                center: [108, 35],
+                zoom: 4.5
+            })
+        });
+
+        let railways = new ol.layer.Tile({
+            source: new ol.source.TileWMS({
+                url: 'http://cheerfun.xyz:8000/cgi-bin/mapserv',
+                params: {
+                    map: "/mapfiles/basemap/railways.map",
+                    service: "wms",
+                    version: "1.3.0",
+                    request: "getMap",
+                    layers: "rail",
+                    width: 256,
+                    height: 256,
+                    crs: "epsg:4326",
+                    format: "image/png"
+                },
+                serverType: 'mapserver',
+            })
+        });
+
+        map.addLayer(railways);
+    </script>
+</body>
+
+</html>
