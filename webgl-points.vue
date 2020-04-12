@@ -88,6 +88,6 @@ export default {
 
 <style>
 #map {
-    height: 600px;
+    height: 100%;
 }
 </style>
