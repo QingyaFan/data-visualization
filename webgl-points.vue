@@ -34,7 +34,7 @@ export default {
         });
 
         let vectorSource = new Vector({
-            url: 'https://openlayers.org/en/latest/examples/data/geojson/world-cities.geojson',
+            url: 'http://localhost:8000/world-cities.geojson',
             format: new GeoJSON()
         });
 
