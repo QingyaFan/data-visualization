@@ -3,3 +3,4 @@ css/.DS_Store
 js/.DS_Store
 node_modules
 server/data/*
+package-lock.json
