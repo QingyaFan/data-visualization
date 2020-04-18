@@ -1,8 +1,10 @@
-# OpenLayers3 例子
+# Data Visualization
 
-我平时写一些关于 OpenLayers 的博客，在博客中有一些例子，博客里主要讲的是一些原理性的知识，代码比较分散，在这个项目里，我将这些例子的完整代码放在这里，便于学习交流。
+加入了一些其他渲染库的例子，不仅仅局限于Openlayers.
 
-在 openlayers 官方网站 -- http://openlayers.org/en/latest/examples， 有很多很有用的例子，这里不再重复，本项目主要是一些官方没有，但是经常在博客中提问到的问题。
+---------------
+
+我平时写一些关于 OpenLayers 的博客，在博客中有一些例子，博客里主要讲的是一些原理性的知识，代码比较分散，在这个项目里，我将这些例子的完整代码放在这里，便于学习交流。在 openlayers 官方网站 -- http://openlayers.org/en/latest/examples， 有很多很有用的例子，这里不再重复，本项目主要是一些官方没有，但是经常在博客中提问到的问题。
 
 - [Mapboxgl渲染海量线数据](https://github.com/QingyaFan/openlayers-examples/blob/master/mapbox-large-waterways.vue)
 - [Mapboxgl渲染世界城市点数据](https://github.com/QingyaFan/openlayers-examples/blob/master/mapbox-large-world-cities.vue)
