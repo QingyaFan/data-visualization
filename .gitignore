@@ -4,3 +4,4 @@ js/.DS_Store
 node_modules
 server/data/*
 package-lock.json
+tests/*
